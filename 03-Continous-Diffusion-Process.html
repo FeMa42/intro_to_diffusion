@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes &#8212; Introduction to Diffusion Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03-Continous-Diffusion-Process';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Score Matching" href="04-Score-Matching.html" />
+    <link rel="prev" title="Illustration of Diffusion Process" href="02-Diffusion-Process.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/forward_diffusion.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/forward_diffusion.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction to Diffusion and Score-Based Generative Models
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-Generative-models.html">Generative Models</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html">Illustration of Diffusion Process</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FeMa42/Intro_to_Diffusion" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FeMa42/Intro_to_Diffusion/issues/new?title=Issue%20on%20page%20%2F03-Continous-Diffusion-Process.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03-Continous-Diffusion-Process.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-stochastic-differential-equations-sdes">What are Stochastic Differential Equations (SDEs)?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-this-relate-to-the-diffusion-process-for-data-generation">How does this relate to the diffusion process for data generation?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-use-this-for-data-generation-reverse-time-diffusion-process">How do we use this for data generation? - Reverse-time diffusion process</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-from-discrete-diffusion-to-continous-time-diffusion-processes">
+<h1>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes<a class="headerlink" href="#introduction-from-discrete-diffusion-to-continous-time-diffusion-processes" title="Permalink to this heading">#</a></h1>
+<p>Remebmer the forward step of the diffusion process from the previous notebook:
+$<span class="math notranslate nohighlight">\(
+q(\mathbf{x}_{1:T} \vert \mathbf{x}_0) = \prod^T_{t=1} q(\mathbf{x}_t \vert \mathbf{x}_{t-1}) , \quad
+q(x_t|x_{t−1}) := \mathcal{N}(x_t; \sqrt{1 − \beta_t}x_{t−1}, \beta_tI) \tag{1}
+\)</span>$</p>
+<p>We can rewrite the forward step using the reparameztrization trick as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+x_t = \sqrt{1 − \beta_t}x_{t−1} + \sqrt{\beta_t} \mathcal{N}(0,\mathbf{I}) =
+\sqrt{1 − \beta(t) \Delta t}x_{t−1} + \sqrt{\beta(t) \Delta t} \mathcal{N}(0,\mathbf{I}) \tag{2}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta t\)</span> is the time step and we define <span class="math notranslate nohighlight">\(\beta_t := \beta(t) \Delta t\)</span>.</p>
+<p>Using smaller and smaller time steps <span class="math notranslate nohighlight">\(\Delta t\)</span> we can view the diffusion process using an infinite number of infinitely small time steps in the limit. Using Taylor expansion we can rewrite the forward step as follows:
+$<span class="math notranslate nohighlight">\(
+x_t \approx x_{t−1} - \frac{\beta(t) \Delta t}{2} x_{t−1} + \sqrt{\beta(t) \Delta t} \mathcal{N}(0,\mathbf{I}) \tag{3}
+\)</span>$</p>
+<p>In the limit of <span class="math notranslate nohighlight">\(\Delta t \rightarrow 0\)</span> (continuous-time diffusion models) we obtain the following <strong>stochastic differential equation (SDE)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+dx_{t}=-\frac{1}{2}\beta(t)x_{t}dt+\sqrt{\beta(t)}dw_{t} \tag{4}
+\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(x_t\)</span> represents data, <span class="math notranslate nohighlight">\(dx_t\)</span> and <span class="math notranslate nohighlight">\(dt\)</span> are infinitesimal updates of data and time, <span class="math notranslate nohighlight">\(dw_t\)</span> is a noise process that corresponds to Gaussian noise injection, and <span class="math notranslate nohighlight">\(\beta(t)\)</span> is now a continuous function of time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<section id="what-are-stochastic-differential-equations-sdes">
+<h2>What are Stochastic Differential Equations (SDEs)?<a class="headerlink" href="#what-are-stochastic-differential-equations-sdes" title="Permalink to this heading">#</a></h2>
+<p>Stochastic Differential Equations (SDEs) are a type of differential equation in which one or more of the terms is a stochastic process, resulting in a solution that is also a stochastic process. They are used to model systems that are influenced by random effects. The Slide from the CVPR tutorial on Denoising Diffusion based Models (<a class="reference external" href="https://cvpr2022-tutorial-diffusion-models.github.io/">https://cvpr2022-tutorial-diffusion-models.github.io/</a>) below helps to understand the difference between ODEs and SDEs:</p>
+<figure>
+<img src="imgs/SDE_slide.png" alt="ODEsVsSDEs" width="1000"/>
+<figcaption>Comparison of ODEs and SDEs (from: https://cvpr2022-tutorial-diffusion-models.github.io/)</figcaption>
+</figure>
+<p>To better understand SDEs, it’s important to first understand the concept of a stochastic process. A stochastic process is a mathematical object usually defined as a collection of random variables. For example for a collection of random variables with respect to time you can think of something like the likelihood of a position or motion of a particle over time. In the context of SDEs, these random variables represent the evolution of a system of random values over time.</p>
+<p>As a solution for a Stochastic Differential Equation, the <strong>diffusion process</strong> is a type of stochastic process that is commonly used to model the dynamics of continuously changing phenomena where randomness plays a role. We can use it where we want to model some form of random walk or noise component. In a diffusion process, the change in the system over time is governed by two components:</p>
+<ol class="arabic simple">
+<li><p><strong>Drift</strong>: This is the deterministic part of the process, which can be thought of as the “average” or “expected” direction in which the process moves. In an SDE, this is typically represented by a function of the current state and time.</p></li>
+<li><p><strong>Diffusion</strong>: This is the stochastic part of the process, which represents random fluctuations around the drift. In an SDE, this is typically represented by a function of the current state and time, multiplied by a Wiener process or another type of stochastic process.</p></li>
+</ol>
+<p>The most common example of a diffusion process is <strong>Brownian motion</strong>, also known as the Wiener process, which models the random motion of particles suspended in a fluid. In Brownian motion, the drift is zero, so the motion is entirely random, with the current velocity of a particle independent of its past velocities. As an example of Brownian motion, the following animation shows a large particle, that collides with a large set of other smaller particles (like a dust particle in the air) and moves in a random directions:</p>
+<figure>
+<img src="imgs/Brownian_motion_large.gif" alt="Brownian_motion_large" width="400" />
+<figcaption>Brownian Motion (from: https://weelookang.blogspot.com/2010/06/ejs-open-source-brownian-motion-gas.html)</figcaption>
+</figure>
+<p>In a more general diffusion process, the drift can be non-zero, so the process has a tendency to move in a certain direction, but there are still random fluctuations around this direction. For example with the SDE from above:</p>
+<div class="math notranslate nohighlight">
+\[
+dx_{t}=-\frac{1}{2}\beta(t)x_{t}dt+\sqrt{\beta(t)}dw_{t} \tag{5}
+\]</div>
+<p>we have the following different parts of the general SDE of the form:</p>
+<div class="math notranslate nohighlight">
+\[
+dx_t = a(x_t, t) dt + b(x_t, t) dw_t \tag{6}
+\]</div>
+<p>Where, <span class="math notranslate nohighlight">\(x_t\)</span> is the state of the system at time <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(a(x_t, t)=-\frac{1}{2}\beta(t)x_{t}\)</span> is the deterministic part of the change in the system also referred to as the <strong>drift term</strong>, such as the average velocity of a particle in a fluid due to the fluid flow. The function <span class="math notranslate nohighlight">\(b(x_t, t)=\sqrt{\beta(t)}\)</span> is referred to as the <strong>diffusion coefficient</strong>, and the term <span class="math notranslate nohighlight">\(\sqrt{\beta(t)} dw_{t}\)</span> is the <strong>diffusion term</strong>. Here, <span class="math notranslate nohighlight">\(dw_t\)</span> represents an infinitesimal increment of a Wiener process (or Brownian motion), which is a continuous-time stochastic process with independent, normally distributed increments.</p>
+<p>The diffusion term is responsible for the random fluctuations in the process <span class="math notranslate nohighlight">\(x_t\)</span>. The function <span class="math notranslate nohighlight">\(b(x_t, t)\)</span> determines how these random fluctuations scale with the state of the system and time. For example, if <span class="math notranslate nohighlight">\(b(x_t, t)\)</span> is large, then the process <span class="math notranslate nohighlight">\(x_t\)</span> will have large random fluctuations, and vice versa. The diffusion term represents the random, unpredictable changes in the system, such as the random motion of particles in a fluid due to collisions with other particles. The drift term <span class="math notranslate nohighlight">\(a(x_t,t)dt\)</span> represents the average or expected change in the system, such as the average velocity of a particle in a fluid due to the fluid flow.</p>
+<p>The deterministic part, <span class="math notranslate nohighlight">\(a(x_t,t)dt\)</span> is similar to what you would see in an ordinary differential equation (ODE). The stochastic part, <span class="math notranslate nohighlight">\(b(x_t,t)dw_t\)</span> is what differentiates an SDE from an ODE. This term introduces randomness into the system. The solution to an SDE is a stochastic process. This means that instead of a single curve as in an ODE, the solution to an SDE is a family of curves, or a random process. Each individual curve represents one possible “path” that the system could take, and the collection of all such curves gives a complete description of the system’s behavior.</p>
+</section>
+<section id="how-does-this-relate-to-the-diffusion-process-for-data-generation">
+<h2>How does this relate to the diffusion process for data generation?<a class="headerlink" href="#how-does-this-relate-to-the-diffusion-process-for-data-generation" title="Permalink to this heading">#</a></h2>
+<p>The deterministic drift part of the diffusion process pulls the data towards the mode of the data distribution. The stochastic diffusion part injects noise into the data. Because of the noise there is no unique path that the data takes. Instead, there is a family of curves that the data could take. The collection of all such curves gives a description of the data distribution. The image below helps to visualize this:</p>
+<figure>
+<img src="imgs/perturb_vp.gif" alt="Continous_Time_Diffusion" width="1000"/>
+<figcaption>Visualizing the Forward Diffusion SDE(from: https://yang-song.net/blog/2021/score/)</figcaption>
+</figure>
+<p>On the left we have samples of the data distribution (images of bedrooms). In the center we have the corresponding diffusion process. In red we can see actual sampled trajectories of the diffusion process. In blue to yellow we can see the a visualization of the probability density function over time. On the left side a simplified multimodal distribution like a Gaussian Mixture Model changing to a univariat Gaussian over time. We can see that there is a deterministic part which pulls the samples to the modes of the distribution and a stochastic part which injects noise making each trajectory unique. We can see that the diffusion process starts with the data distribution and ends with the unit Gaussian distribution.</p>
+</section>
+<section id="how-do-we-use-this-for-data-generation-reverse-time-diffusion-process">
+<h2>How do we use this for data generation? - Reverse-time diffusion process<a class="headerlink" href="#how-do-we-use-this-for-data-generation-reverse-time-diffusion-process" title="Permalink to this heading">#</a></h2>
+<p>If we can run this process in the reverse direction we could genereate data from the unit gaussian distribution. As shown in general by Brian Anderson in “Reverse-time diffusion equation models” (<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/0304414982900515">https://www.sciencedirect.com/science/article/pii/0304414982900515</a>) and later by Yang Song for generative modeling in “Score-Based Generative Modeling through Stochastic Differential Equations” (<a class="reference external" href="https://arxiv.org/abs/2011.13456">https://arxiv.org/abs/2011.13456</a>) we can run the diffusion process in reverse by solving the following SDE for the reverse time diffusion process:
+$<span class="math notranslate nohighlight">\(
+dx_t = -\frac{1}{2}\beta(t)x_{t}dt - \beta(t)\nabla_{x_{t}}\log q_t(x_t) +\sqrt{\beta(t)}dw_{t} \tag{7}
+\)</span>$</p>
+<p>Where, <span class="math notranslate nohighlight">\(q_t(x_t)\)</span> is the probability density function of the data distribution at time <span class="math notranslate nohighlight">\(t\)</span>. The term <span class="math notranslate nohighlight">\(-\beta(t)\nabla_{x_{t}}\log q_t(x_t)\)</span> is the <strong>score function</strong> which is the gradient of the log probability of the data distribution. The score function forms the drift term together with the term <span class="math notranslate nohighlight">\(-\frac{1}{2}\beta(t)x_{t}dt\)</span>, which is the same as in the forward direction. The diffusion term is also the same as in the forward diffusion SDE from above. We can use SDE solvers to generate data samples based on equation (7) (more on this later). However, there is the question <strong>how do we get the score function <span class="math notranslate nohighlight">\(\nabla_{x_{t}}\log q_t(x_t)\)</span>?</strong></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-Diffusion-Process.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Illustration of Diffusion Process</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-Score-Matching.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Score Matching</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-stochastic-differential-equations-sdes">What are Stochastic Differential Equations (SDEs)?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-this-relate-to-the-diffusion-process-for-data-generation">How does this relate to the diffusion process for data generation?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-use-this-for-data-generation-reverse-time-diffusion-process">How do we use this for data generation? - Reverse-time diffusion process</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Damian Boborzi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

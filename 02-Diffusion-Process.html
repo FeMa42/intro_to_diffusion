@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Illustration of Diffusion Process &#8212; Introduction to Diffusion Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02-Diffusion-Process';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction: From Discrete Diffusion to Continous Time Diffusion Processes" href="03-Continous-Diffusion-Process.html" />
+    <link rel="prev" title="Generative Models" href="01-Generative-models.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/forward_diffusion.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/forward_diffusion.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction to Diffusion and Score-Based Generative Models
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-Generative-models.html">Generative Models</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Illustration of Diffusion Process</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FeMa42/Intro_to_Diffusion" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FeMa42/Intro_to_Diffusion/issues/new?title=Issue%20on%20page%20%2F02-Diffusion-Process.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/02-Diffusion-Process.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Illustration of Diffusion Process</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Illustration of Diffusion Process</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-schedule">Defining a schedule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-process">Forward Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-step">Forward Step</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-process">Reverse Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterizing-mu-theta">Parameterizing <span class="math notranslate nohighlight">\(\mu_\theta\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="illustration-of-diffusion-process">
+<h1>Illustration of Diffusion Process<a class="headerlink" href="#illustration-of-diffusion-process" title="Permalink to this heading">#</a></h1>
+<blockquote>
+<div><p>I want to note that this notebook has been lightly modified from its original form, sourced from the DiffusionFastForward repository: <a class="github reference external" href="https://github.com/mikonvergence/DiffusionFastForward/blob/master/01-Diffusion-Sandbox.ipynb">mikonvergence/DiffusionFastForward</a></p>
+</div></blockquote>
+<p>In this notebook, the intricacies of a denosing diffusion framework are illustrated with the aid of simple snippets.</p>
+<p>First, let’s import an image to use for the examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># img = torch.FloatTensor(imageio.imread(&#39;imgs/hills_2.png&#39;)/255)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;imgs/Klettersteig.jpg&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/59/r58bsq3j6j9f_t7d4z2fbww40000gn/T/ipykernel_17608/3026492335.py:11: DeprecationWarning: Starting with ImageIO v3 the behavior of this function will switch to that of iio.v3.imread. To keep the current behavior (and make this warning disappear) use `import imageio.v2 as imageio` or call `imageio.v2.imread` directly.
+  img = torch.FloatTensor(imageio.imread(&#39;imgs/Klettersteig.jpg&#39;)/255)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x15e5287f0&gt;
+</pre></div>
+</div>
+<img alt="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" src="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-preprocessing">
+<h1>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
+<p>The majority of the diffusion models assume that the images are scaled to the <code class="docutils literal notranslate"><span class="pre">[-1,+1]</span></code> range (which tends to simplify many equations). This tutorial will follow the same approach, so we need to define input and output transformation functions <code class="docutils literal notranslate"><span class="pre">input_T()</span></code> and <code class="docutils literal notranslate"><span class="pre">output_T()</span></code>.</p>
+<p>Also, let’s define our own <code class="docutils literal notranslate"><span class="pre">show()</span></code> wrapper function that displays the image with automatic output transformation!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">input_T</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="c1"># [0,1] -&gt; [-1,+1]</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span>
+    
+<span class="k">def</span> <span class="nf">output_T</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="c1"># [-1,+1] -&gt; [0,1]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">input</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">output_T</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    
+<span class="n">img_</span><span class="o">=</span><span class="n">input_T</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">img_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/58621076aa72559b525c14288ca6807ef500d12fa372756cc53e26985d64dedd.png" src="_images/58621076aa72559b525c14288ca6807ef500d12fa372756cc53e26985d64dedd.png" />
+</div>
+</div>
+<section id="defining-a-schedule">
+<h2>Defining a schedule<a class="headerlink" href="#defining-a-schedule" title="Permalink to this heading">#</a></h2>
+<p>The diffusion process is built based on a variance schedule, which determines the levels of added noise at each step of the process. To that end, our schedule is defined below, with the following quantities:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">betas</span></code>:<span class="math notranslate nohighlight">\(\beta_t \in [0, 1]\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alphas</span></code>: <span class="math notranslate nohighlight">\(\alpha_t=1-\beta_t\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alphas_sqrt</span></code>:  <span class="math notranslate nohighlight">\(\sqrt{\alpha_t}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alphas_prod</span></code>: <span class="math notranslate nohighlight">\(\bar{\alpha}_t=\prod_{i=0}^{t}\alpha_i\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alphas_prod_sqrt</span></code>: <span class="math notranslate nohighlight">\(\sqrt{\bar{\alpha}_t}\)</span></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_timesteps</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">betas</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span><span class="mf">2e-2</span><span class="p">,</span><span class="n">num_timesteps</span><span class="p">)</span>   <span class="c1"># from 0.0001 to 0.02 in 1000 steps</span>
+
+<span class="n">alphas</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="n">betas</span>                                  <span class="c1"># from 0.9999 to 0.98 in 1000 steps</span>
+<span class="n">alphas_sqrt</span><span class="o">=</span><span class="n">alphas</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+<span class="n">alphas_cumprod</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">alphas_cumprod_sqrt</span><span class="o">=</span><span class="n">alphas_cumprod</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="forward-process">
+<h2>Forward Process<a class="headerlink" href="#forward-process" title="Permalink to this heading">#</a></h2>
+<p>The forward process <span class="math notranslate nohighlight">\(q\)</span> determines how subsequent steps in the diffusion are derived (gradual distortion of the original sample <span class="math notranslate nohighlight">\(x_0\)</span>).</p>
+<p>📃 First, let’s bring up the key equations describing this process…</p>
+<p>Basic format of the forward step:
+$<span class="math notranslate nohighlight">\(
+q(x_t|x_{t−1}) := \mathcal{N}(x_t; \sqrt{1 − \beta_t}x_{t−1}, \beta_tI) \tag{1}
+\)</span>$</p>
+<p>For a complete trajectory <span class="math notranslate nohighlight">\(x_{0}\)</span> to <span class="math notranslate nohighlight">\(x_{1:T}\)</span> We can describe it with the following product of conditional distributions:
+$<span class="math notranslate nohighlight">\(
+q(\mathbf{x}_{1:T} \vert \mathbf{x}_0) = \prod^T_{t=1} q(\mathbf{x}_t \vert \mathbf{x}_{t-1})
+\)</span>$</p>
+<p>For infinite steps <span class="math notranslate nohighlight">\(T \rightarrow \infty\)</span> the input data would be transformed into a variable from an isotropic Gaussian distribution <span class="math notranslate nohighlight">\(x_T \sim N(0,I)\)</span>.</p>
+<img src="imgs/DDPM.png" alt="DDPM" width="800"/>
+<p>To step directly from <span class="math notranslate nohighlight">\(x_0\)</span> to <span class="math notranslate nohighlight">\(x_t\)</span> we can use the reparmetrization trick (with <span class="math notranslate nohighlight">\(\bar{\alpha_t}=\prod^t_{i=1}\alpha_i\)</span>):
+$<span class="math notranslate nohighlight">\(
+q(x_t|x_0) = \mathcal{N}(x_t;\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) \tag{2}
+\)</span>$</p>
+<section id="forward-step">
+<h3>Forward Step<a class="headerlink" href="#forward-step" title="Permalink to this heading">#</a></h3>
+<p>Let’s define a function <code class="docutils literal notranslate"><span class="pre">forward_step()</span></code> that will allow us to use both <span class="math notranslate nohighlight">\(q(x_t|x_{t-1})\)</span> and  <code class="docutils literal notranslate"><span class="pre">forward_jump()</span></code> for <span class="math notranslate nohighlight">\(q(x_t|x_0)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">forward_step</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">condition_img</span><span class="p">,</span> <span class="n">return_noise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        forward step: t-1 -&gt; t</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">assert</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+
+    <span class="n">mean</span><span class="o">=</span><span class="n">alphas_sqrt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">condition_img</span>    
+    <span class="n">std</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+      
+    <span class="c1"># sampling from N</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_noise</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mean</span><span class="o">+</span><span class="n">std</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">noise</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mean</span><span class="o">+</span><span class="n">std</span><span class="o">*</span><span class="n">noise</span><span class="p">,</span> <span class="n">noise</span>
+    
+<span class="k">def</span> <span class="nf">forward_jump</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">condition_img</span><span class="p">,</span> <span class="n">condition_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_noise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        forward jump: 0 -&gt; t</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="k">assert</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    
+    <span class="n">mean</span><span class="o">=</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="n">condition_img</span>
+    <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+      
+    <span class="c1"># sampling from N</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_noise</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mean</span><span class="o">+</span><span class="n">std</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">noise</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mean</span><span class="o">+</span><span class="n">std</span><span class="o">*</span><span class="n">noise</span><span class="p">,</span> <span class="n">noise</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="o">=</span><span class="mi">5</span> <span class="c1"># number of computed states between x_0 and x_T</span>
+<span class="n">M</span><span class="o">=</span><span class="mi">4</span> <span class="c1"># number of samples taken from each distribution</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the first example, when <code class="docutils literal notranslate"><span class="pre">t==0</span></code>, we want to derive a sample <span class="math notranslate nohighlight">\(x_t\)</span> based on the clean sample <span class="math notranslate nohighlight">\(x_0\)</span>!</p>
+<p>The first column shows the mean image for a given stage of the diffusion, and the subsequent columns to the right show several samples taken from the same distribution (they are different if you look closely!).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">t_step</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="o">*</span><span class="p">(</span><span class="n">num_timesteps</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">idx</span><span class="p">)</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">*</span><span class="n">img_</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\mu_t=\sqrt{\bar{\alpha}_t}x_0$&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;t: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_step</span><span class="o">/</span><span class="n">num_timesteps</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+    
+    <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">x_t</span><span class="o">=</span><span class="n">forward_jump</span><span class="p">(</span><span class="n">t_step</span><span class="p">,</span><span class="n">img_</span><span class="p">)</span>
+        
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">,</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">)</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">show</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>        
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6a69b13d0a1b4c3a588bfaad793a71c523c6ccdea6d667e6690402ce1e2d074a.png" src="_images/6a69b13d0a1b4c3a588bfaad793a71c523c6ccdea6d667e6690402ce1e2d074a.png" />
+</div>
+</div>
+<p>Alternatively, we can test the process of going from <span class="math notranslate nohighlight">\(x_{t-1}\)</span> to <span class="math notranslate nohighlight">\(x_t\)</span>, which is a single step in the diffusion process. For that we can use the <code class="docutils literal notranslate"><span class="pre">forward_step</span></code> function.</p>
+<p>Note that the mean <span class="math notranslate nohighlight">\(\mu_t\)</span> is now a bit different (first column) since it is conditioned on a specific sample of <span class="math notranslate nohighlight">\(x_{t-1}\)</span>!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">t_step</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="o">*</span><span class="p">(</span><span class="n">num_timesteps</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">prev_img</span><span class="o">=</span><span class="n">forward_jump</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span><span class="n">img_</span><span class="p">)</span> <span class="c1"># directly go to prev state</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">idx</span><span class="p">)</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">alphas_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">*</span><span class="n">prev_img</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\mu_t=\sqrt{1-\beta_t}x_{t-1}$&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;t: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_step</span><span class="o">/</span><span class="n">num_timesteps</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+    
+    <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">,</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">M</span><span class="p">)</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">x_t</span><span class="o">=</span><span class="n">forward_step</span><span class="p">(</span><span class="n">t_step</span><span class="p">,</span><span class="n">prev_img</span><span class="p">)</span>
+        <span class="n">show</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>        
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d12bd48dc9e1346a38e6412fc4ef2d1a6f2e2bb03950c2413a880a165d4043fe.png" src="_images/d12bd48dc9e1346a38e6412fc4ef2d1a6f2e2bb03950c2413a880a165d4043fe.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="reverse-process">
+<h2>Reverse Process<a class="headerlink" href="#reverse-process" title="Permalink to this heading">#</a></h2>
+<p>The purpose of the reverse process <span class="math notranslate nohighlight">\(p\)</span> is to approximate the previous step <span class="math notranslate nohighlight">\(x_{t-1}\)</span> in the diffusion chain based on a sample <span class="math notranslate nohighlight">\(x_t\)</span>. In practice, this approximation <span class="math notranslate nohighlight">\(p(x_{t-1}|x_t)\)</span> must be done without the knowledge of <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>A parametrizable prediction model with parameters <span class="math notranslate nohighlight">\(\theta\)</span> is used to estimate <span class="math notranslate nohighlight">\(p_\theta(x_{t-1}|x_t)\)</span>.</p>
+<p>The reverse process will also be (approximately) gaussian if the diffusion steps are small enough:</p>
+<div class="math notranslate nohighlight">
+\[
+p_\theta({x}_{0:T}) = p({x}_T) \prod^T_{t=1} p_\theta({x}_{t-1} \vert {x}_t) \quad
+p_\theta({x}_{t-1} \vert {x}_t) := \mathcal{N}({x}_{t-1}; \boldsymbol{\mu}_\theta({x}_t, t), \boldsymbol{\Sigma}_\theta({x}_t, t))
+\tag{3}
+\]</div>
+<p>In many works, it is assumed that the variance of this distribution should not depend strongly on <span class="math notranslate nohighlight">\(x_0\)</span> or <span class="math notranslate nohighlight">\(x_t\)</span>, but rather on the stage of the diffusion process <span class="math notranslate nohighlight">\(t\)</span>. This can be observed in the true distribution <span class="math notranslate nohighlight">\(q(x_{t-1}|x_t, x_0)\)</span>, where the variance of the distribution equals <span class="math notranslate nohighlight">\(\tilde{\beta}_t\)</span>.</p>
+<section id="parameterizing-mu-theta">
+<h3>Parameterizing <span class="math notranslate nohighlight">\(\mu_\theta\)</span><a class="headerlink" href="#parameterizing-mu-theta" title="Permalink to this heading">#</a></h3>
+<p>There are at least 3 ways of parameterizing the mean of the reverse step distribution <span class="math notranslate nohighlight">\(p_\theta(x_{t-1}|x_t)\)</span>:</p>
+<ol class="arabic simple">
+<li><p>Directly (a neural network will <strong>estimate <span class="math notranslate nohighlight">\(\mu_\theta\)</span></strong>)
+$<span class="math notranslate nohighlight">\(\mu_\theta = \mu_\theta(x_t,t)\)</span>$</p></li>
+<li><p>Via <span class="math notranslate nohighlight">\(x_0\)</span> (a neural network will <strong>estimate <span class="math notranslate nohighlight">\(x_0\)</span></strong>)
+$<span class="math notranslate nohighlight">\(\tilde{\mu}_\theta = \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_{0, \theta}(x_t,t) + \frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t}x_t \tag{4}\)</span>$</p></li>
+<li><p>Via noise <span class="math notranslate nohighlight">\(\epsilon\)</span> subtraction from <span class="math notranslate nohighlight">\(x_t\)</span> (a neural network will <strong>estimate <span class="math notranslate nohighlight">\(\epsilon\)</span></strong>)
+$<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}}(x_t-\sqrt{1-\bar{\alpha}_t} \epsilon_\theta(x_t,t))\tag{5}\)</span>$</p></li>
+</ol>
+<p>Approach 3 of approximating the normal noise <span class="math notranslate nohighlight">\(\epsilon_\theta\)</span> is used most widely.</p>
+<p><strong>Example, estimating <span class="math notranslate nohighlight">\(\epsilon\)</span> using a U-Net:</strong></p>
+<figure>
+<img src="imgs/U-net.png" alt="DDPM" width="800"/>
+<figcaption>U-Net Architecture with ResNet blocks (from: https://cvpr2022-tutorial-diffusion-models.github.io/)</figcaption>
+</figure>
+<p>Let’s look at what an example <span class="math notranslate nohighlight">\(\epsilon\)</span> might look like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_step</span><span class="o">=</span><span class="mi">50</span>
+
+<span class="n">x_t</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="n">forward_jump</span><span class="p">(</span><span class="n">t_step</span><span class="p">,</span><span class="n">img_</span><span class="p">,</span><span class="n">return_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">img_</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$x_0$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$x_t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\epsilon$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
+</pre></div>
+</div>
+<img alt="_images/40663e485aab96242cf8fcf6389b1adc87b0f0a2fc4451d48af7c1fd70701621.png" src="_images/40663e485aab96242cf8fcf6389b1adc87b0f0a2fc4451d48af7c1fd70701621.png" />
+</div>
+</div>
+<p>If <span class="math notranslate nohighlight">\(\epsilon\)</span> is predicted correctly, we can use the equation (5) to predict <span class="math notranslate nohighlight">\(x_0\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_0_pred</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">*</span><span class="n">noise</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$x_t$ ($\ell_1$: </span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span><span class="n">img_</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">x_0_pred</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$x_0$ prediction ($\ell_1$: </span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">x_0_pred</span><span class="p">,</span><span class="n">img_</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">img_</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$x_0$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
+</pre></div>
+</div>
+<img alt="_images/33cc71b5635aa07599f683cb7f7cbf427ab3271de003525011e41c3d2fbb96a9.png" src="_images/33cc71b5635aa07599f683cb7f7cbf427ab3271de003525011e41c3d2fbb96a9.png" />
+</div>
+</div>
+<p>Approximation (or knowledge) of <span class="math notranslate nohighlight">\(x_0\)</span> allows us to approximate the mean of the step <span class="math notranslate nohighlight">\(t-1\)</span>, using (4).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate mean</span>
+<span class="n">mean_pred</span><span class="o">=</span><span class="n">x_0_pred</span><span class="o">*</span><span class="p">(</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">betas</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span> <span class="o">+</span> <span class="n">x_t</span><span class="o">*</span><span class="p">(</span><span class="n">alphas_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span>
+
+<span class="c1"># let&#39;s compare it to ground truth mean of the previous step (requires knowledge of x_0)</span>
+<span class="n">mean_gt</span><span class="o">=</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">img_</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since reverse process mean estimation <span class="math notranslate nohighlight">\(\tilde{\mu}_\theta\)</span> in (4) is effectively linear interpolation between noisy <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(x_0\)</span> it is expected to have a higher error (as the additive noise is still present) compared to the mean computed using the forward process (which is computed by scaling the clean sample by a scalar value).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$x_t$   ($\ell_1$: </span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span><span class="n">img_</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">mean_pred</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\tilde{\mu}_{t-1}$&#39;</span> <span class="o">+</span> <span class="s1">&#39;  ($\ell_1$: </span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">mean_pred</span><span class="p">,</span><span class="n">img_</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">mean_gt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\mu_{t-1}$&#39;</span> <span class="o">+</span> <span class="s1">&#39;  ($\ell_1$: </span><span class="si">{:.3f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">mean_gt</span><span class="p">,</span><span class="n">img_</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;$\\mu_{t-1}$  ($\\ell_1$: 0.009)&#39;)
+</pre></div>
+</div>
+<img alt="_images/be07fc6f67a01f33177ddfa1fd5a6bdf6a1286d8aee86b7be4c76874c3fa4e38.png" src="_images/be07fc6f67a01f33177ddfa1fd5a6bdf6a1286d8aee86b7be4c76874c3fa4e38.png" />
+</div>
+</div>
+<p>Once we get our <code class="docutils literal notranslate"><span class="pre">mean_pred</span></code> (<span class="math notranslate nohighlight">\(\tilde{\mu_{t}}\)</span>), we can define our distribution for the previous step</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\beta}_t=\beta_t \tag{6}\]</div>
+<div class="math notranslate nohighlight">
+\[ p_\theta(x_{t-1}|x_t) := \mathcal{N}(x_{t-1};\tilde{\mu}_\theta(x_t,t),\tilde{\beta}_t I) \tag{7}\]</div>
+<blockquote>
+<div><p>Important: the experiment below should be treated as a simulation. In practice, the network must  predict either <span class="math notranslate nohighlight">\(\epsilon_\theta\)</span> or <span class="math notranslate nohighlight">\(x^{\theta}_0\)</span> or <span class="math notranslate nohighlight">\(\tilde{\mu}_\theta\)</span>. Here, the value of <span class="math notranslate nohighlight">\(epsilon\)</span> is simply subs</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reverse_step</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">x_t</span><span class="p">,</span> <span class="n">t_step</span><span class="p">,</span> <span class="n">return_noise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    
+    <span class="c1"># estimate x_0 based on epsilon</span>
+    <span class="n">x_0_pred</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">*</span><span class="n">epsilon</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">t_step</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">sample</span><span class="o">=</span><span class="n">x_0_pred</span>
+        <span class="n">noise</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x_0_pred</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># estimate mean</span>
+        <span class="n">mean_pred</span><span class="o">=</span><span class="n">x_0_pred</span><span class="o">*</span><span class="p">(</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">betas</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span> <span class="o">+</span> <span class="n">x_t</span><span class="o">*</span><span class="p">(</span><span class="n">alphas_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="p">])</span>
+
+        <span class="c1"># compute variance</span>
+        <span class="n">beta_pred</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="k">if</span> <span class="n">t_step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="n">sample</span><span class="o">=</span><span class="n">mean_pred</span><span class="o">+</span><span class="n">beta_pred</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
+        <span class="c1"># this noise is only computed for simulation purposes (since x_0_pred is not known normally)</span>
+        <span class="n">noise</span><span class="o">=</span><span class="p">(</span><span class="n">sample</span><span class="o">-</span><span class="n">x_0_pred</span><span class="o">*</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">return_noise</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">,</span> <span class="n">noise</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sample</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_t</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="n">forward_jump</span><span class="p">(</span><span class="mi">1000</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">img_</span><span class="p">,</span><span class="n">return_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">state_imgs</span><span class="o">=</span><span class="p">[</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+<span class="k">for</span> <span class="n">t_step</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)):</span>
+    <span class="n">x_t</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="n">reverse_step</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span><span class="n">x_t</span><span class="p">,</span><span class="n">t_step</span><span class="p">,</span><span class="n">return_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">t_step</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">state_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">state_imgs</span><span class="o">=</span><span class="p">[</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">t_step</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)):</span>
+<span class="ne">----&gt; </span><span class="mi">5</span>     <span class="n">x_t</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="n">reverse_step</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span><span class="n">x_t</span><span class="p">,</span><span class="n">t_step</span><span class="p">,</span><span class="n">return_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="k">if</span> <span class="n">t_step</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">state_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+<span class="nn">Cell In[12], line 15,</span> in <span class="ni">reverse_step</span><span class="nt">(epsilon, x_t, t_step, return_noise)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># compute variance</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">beta_pred</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="k">if</span> <span class="n">t_step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">sample</span><span class="o">=</span><span class="n">mean_pred</span><span class="o">+</span><span class="n">beta_pred</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="c1"># this noise is only computed for simulation purposes (since x_0_pred is not known normally)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">noise</span><span class="o">=</span><span class="p">(</span><span class="n">sample</span><span class="o">-</span><span class="n">x_0_pred</span><span class="o">*</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">state_img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_imgs</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">state_imgs</span><span class="p">),</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">state_img</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-Generative-models.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Generative Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-Continous-Diffusion-Process.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Illustration of Diffusion Process</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-schedule">Defining a schedule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-process">Forward Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-step">Forward Step</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-process">Reverse Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterizing-mu-theta">Parameterizing <span class="math notranslate nohighlight">\(\mu_\theta\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Damian Boborzi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
