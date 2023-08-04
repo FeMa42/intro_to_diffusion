@@ -411,11 +411,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/59/r58bsq3j6j9f_t7d4z2fbww40000gn/T/ipykernel_17608/3026492335.py:11: DeprecationWarning: Starting with ImageIO v3 the behavior of this function will switch to that of iio.v3.imread. To keep the current behavior (and make this warning disappear) use `import imageio.v2 as imageio` or call `imageio.v2.imread` directly.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/59/r58bsq3j6j9f_t7d4z2fbww40000gn/T/ipykernel_31684/3026492335.py:11: DeprecationWarning: Starting with ImageIO v3 the behavior of this function will switch to that of iio.v3.imread. To keep the current behavior (and make this warning disappear) use `import imageio.v2 as imageio` or call `imageio.v2.imread` directly.
   img = torch.FloatTensor(imageio.imread(&#39;imgs/Klettersteig.jpg&#39;)/255)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x15e5287f0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x2a9fe7880&gt;
 </pre></div>
 </div>
 <img alt="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" src="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" />
@@ -565,7 +565,7 @@ q(x_t|x_0) = \mathcal{N}(x_t;\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a69b13d0a1b4c3a588bfaad793a71c523c6ccdea6d667e6690402ce1e2d074a.png" src="_images/6a69b13d0a1b4c3a588bfaad793a71c523c6ccdea6d667e6690402ce1e2d074a.png" />
+<img alt="_images/2cbd504471fbc79f369de90b3f7e17d71cce7bff876cf5a25e8f77778c900d7c.png" src="_images/2cbd504471fbc79f369de90b3f7e17d71cce7bff876cf5a25e8f77778c900d7c.png" />
 </div>
 </div>
 <p>Alternatively, we can test the process of going from <span class="math notranslate nohighlight">\(x_{t-1}\)</span> to <span class="math notranslate nohighlight">\(x_t\)</span>, which is a single step in the diffusion process. For that we can use the <code class="docutils literal notranslate"><span class="pre">forward_step</span></code> function.</p>
@@ -594,7 +594,7 @@ q(x_t|x_0) = \mathcal{N}(x_t;\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d12bd48dc9e1346a38e6412fc4ef2d1a6f2e2bb03950c2413a880a165d4043fe.png" src="_images/d12bd48dc9e1346a38e6412fc4ef2d1a6f2e2bb03950c2413a880a165d4043fe.png" />
+<img alt="_images/be63863aabe062ceabeceb48995755a3c593827258962647d0088314e5502428.png" src="_images/be63863aabe062ceabeceb48995755a3c593827258962647d0088314e5502428.png" />
 </div>
 </div>
 </section>
@@ -654,7 +654,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
 </pre></div>
 </div>
-<img alt="_images/40663e485aab96242cf8fcf6389b1adc87b0f0a2fc4451d48af7c1fd70701621.png" src="_images/40663e485aab96242cf8fcf6389b1adc87b0f0a2fc4451d48af7c1fd70701621.png" />
+<img alt="_images/27ad6075847d85414d14c0b93c31b4628cf64719a398d918ecc71f27e1823a72.png" src="_images/27ad6075847d85414d14c0b93c31b4628cf64719a398d918ecc71f27e1823a72.png" />
 </div>
 </div>
 <p>If <span class="math notranslate nohighlight">\(\epsilon\)</span> is predicted correctly, we can use the equation (5) to predict <span class="math notranslate nohighlight">\(x_0\)</span>:</p>
@@ -681,7 +681,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
 </pre></div>
 </div>
-<img alt="_images/33cc71b5635aa07599f683cb7f7cbf427ab3271de003525011e41c3d2fbb96a9.png" src="_images/33cc71b5635aa07599f683cb7f7cbf427ab3271de003525011e41c3d2fbb96a9.png" />
+<img alt="_images/7de59e0bdb2e16c95870809409c22ef2f3c49b3a2aa4725f3e97db26a9aa804d.png" src="_images/7de59e0bdb2e16c95870809409c22ef2f3c49b3a2aa4725f3e97db26a9aa804d.png" />
 </div>
 </div>
 <p>Approximation (or knowledge) of <span class="math notranslate nohighlight">\(x_0\)</span> allows us to approximate the mean of the step <span class="math notranslate nohighlight">\(t-1\)</span>, using (4).</p>
@@ -715,7 +715,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;$\\mu_{t-1}$  ($\\ell_1$: 0.009)&#39;)
 </pre></div>
 </div>
-<img alt="_images/be07fc6f67a01f33177ddfa1fd5a6bdf6a1286d8aee86b7be4c76874c3fa4e38.png" src="_images/be07fc6f67a01f33177ddfa1fd5a6bdf6a1286d8aee86b7be4c76874c3fa4e38.png" />
+<img alt="_images/8657224a1c820dd0016f8cb82ef497fbf71819f75f6d8d075a6f02278d6c0d9b.png" src="_images/8657224a1c820dd0016f8cb82ef497fbf71819f75f6d8d075a6f02278d6c0d9b.png" />
 </div>
 </div>
 <p>Once we get our <code class="docutils literal notranslate"><span class="pre">mean_pred</span></code> (<span class="math notranslate nohighlight">\(\tilde{\mu_{t}}\)</span>), we can define our distribution for the previous step</p>
@@ -766,27 +766,6 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">state_imgs</span><span class="o">=</span><span class="p">[</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">t_step</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)):</span>
-<span class="ne">----&gt; </span><span class="mi">5</span>     <span class="n">x_t</span><span class="p">,</span><span class="n">noise</span><span class="o">=</span><span class="n">reverse_step</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span><span class="n">x_t</span><span class="p">,</span><span class="n">t_step</span><span class="p">,</span><span class="n">return_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="k">if</span> <span class="n">t_step</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">state_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_t</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-
-<span class="nn">Cell In[12], line 15,</span> in <span class="ni">reverse_step</span><span class="nt">(epsilon, x_t, t_step, return_noise)</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># compute variance</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">beta_pred</span><span class="o">=</span><span class="n">betas</span><span class="p">[</span><span class="n">t_step</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="k">if</span> <span class="n">t_step</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">sample</span><span class="o">=</span><span class="n">mean_pred</span><span class="o">+</span><span class="n">beta_pred</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x_t</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="c1"># this noise is only computed for simulation purposes (since x_0_pred is not known normally)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">noise</span><span class="o">=</span><span class="p">(</span><span class="n">sample</span><span class="o">-</span><span class="n">x_0_pred</span><span class="o">*</span><span class="n">alphas_cumprod_sqrt</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alphas_cumprod</span><span class="p">[</span><span class="n">t_step</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -799,6 +778,9 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d53fb990aeee1d24381784ea952df2cf8b46ff8213827922452c940a5f4b36ab.png" src="_images/d53fb990aeee1d24381784ea952df2cf8b46ff8213827922452c940a5f4b36ab.png" />
 </div>
 </div>
 </section>

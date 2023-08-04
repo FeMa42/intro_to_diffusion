@@ -1,1 +1,1 @@
-# Intro_to_Diffusion
+# intro_to_diffusion
