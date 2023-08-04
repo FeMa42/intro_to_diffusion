@@ -1,0 +1,9 @@
+jupyter-book
+matplotlib
+numpy
+sklearn
+torch
+tqdm
+ipywidgets
+ipython
+imageio

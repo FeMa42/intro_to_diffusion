@@ -1,0 +1,12 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: 01-Generative-models
+- file: 02-Diffusion-Process
+- file: 03-Continous-Diffusion-Process
+- file: 04-Score-Matching
+- file: 05-Score-SwissRoll-Example
+- file: 06-Summary-Score-Based-Models
