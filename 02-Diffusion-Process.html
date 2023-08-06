@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '02-Diffusion-Process';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction: From Discrete Diffusion to Continous Time Diffusion Processes" href="03-Continous-Diffusion-Process.html" />
+    <link rel="next" title="From Discrete Diffusion to Continous Time Diffusion Processes" href="03-Continous-Diffusion-Process.html" />
     <link rel="prev" title="Generative Models" href="01-Generative-models.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -163,11 +163,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Illustration of Diffusion Process</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-Score-MNIST-Example.html">Example: Score-Based Generative Model on MNIST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-Example-Implementations.html">Implementation Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-Another-View.html">Another view on Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-Score-SwissRoll-3D-Example.html">Example: Score-Based Generative Model for 3D Swiss Roll Dataset</a></li>
 </ul>
 
     </div>
@@ -411,11 +414,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/59/r58bsq3j6j9f_t7d4z2fbww40000gn/T/ipykernel_31684/3026492335.py:11: DeprecationWarning: Starting with ImageIO v3 the behavior of this function will switch to that of iio.v3.imread. To keep the current behavior (and make this warning disappear) use `import imageio.v2 as imageio` or call `imageio.v2.imread` directly.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/59/r58bsq3j6j9f_t7d4z2fbww40000gn/T/ipykernel_61724/3026492335.py:11: DeprecationWarning: Starting with ImageIO v3 the behavior of this function will switch to that of iio.v3.imread. To keep the current behavior (and make this warning disappear) use `import imageio.v2 as imageio` or call `imageio.v2.imread` directly.
   img = torch.FloatTensor(imageio.imread(&#39;imgs/Klettersteig.jpg&#39;)/255)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x2a9fe7880&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x17dae38e0&gt;
 </pre></div>
 </div>
 <img alt="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" src="_images/59165decfcb66b9a3729335d2d3d61266f7f60ff96f9bb75aa989a2cf79b28ec.png" />
@@ -565,7 +568,7 @@ q(x_t|x_0) = \mathcal{N}(x_t;\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2cbd504471fbc79f369de90b3f7e17d71cce7bff876cf5a25e8f77778c900d7c.png" src="_images/2cbd504471fbc79f369de90b3f7e17d71cce7bff876cf5a25e8f77778c900d7c.png" />
+<img alt="_images/0793cb2613159710a928ded7a8be39c34bcae045ed7f09555cc582d8c92bf2c8.png" src="_images/0793cb2613159710a928ded7a8be39c34bcae045ed7f09555cc582d8c92bf2c8.png" />
 </div>
 </div>
 <p>Alternatively, we can test the process of going from <span class="math notranslate nohighlight">\(x_{t-1}\)</span> to <span class="math notranslate nohighlight">\(x_t\)</span>, which is a single step in the diffusion process. For that we can use the <code class="docutils literal notranslate"><span class="pre">forward_step</span></code> function.</p>
@@ -594,7 +597,7 @@ q(x_t|x_0) = \mathcal{N}(x_t;\sqrt{\bar{\alpha_t}}x_0, (1 − \bar{\alpha_t})I) 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be63863aabe062ceabeceb48995755a3c593827258962647d0088314e5502428.png" src="_images/be63863aabe062ceabeceb48995755a3c593827258962647d0088314e5502428.png" />
+<img alt="_images/1b0bbfd0d8e1a846570b80968fe5adf73921502e14ee884819733ad5184d4e46.png" src="_images/1b0bbfd0d8e1a846570b80968fe5adf73921502e14ee884819733ad5184d4e46.png" />
 </div>
 </div>
 </section>
@@ -654,7 +657,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
 </pre></div>
 </div>
-<img alt="_images/27ad6075847d85414d14c0b93c31b4628cf64719a398d918ecc71f27e1823a72.png" src="_images/27ad6075847d85414d14c0b93c31b4628cf64719a398d918ecc71f27e1823a72.png" />
+<img alt="_images/8c27f3073e154a0b4e224f2622362cbd034a5eb2a6e1b38fdd5c9b1702d2a49b.png" src="_images/8c27f3073e154a0b4e224f2622362cbd034a5eb2a6e1b38fdd5c9b1702d2a49b.png" />
 </div>
 </div>
 <p>If <span class="math notranslate nohighlight">\(\epsilon\)</span> is predicted correctly, we can use the equation (5) to predict <span class="math notranslate nohighlight">\(x_0\)</span>:</p>
@@ -681,7 +684,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-0.5, 1199.5, 1599.5, -0.5)
 </pre></div>
 </div>
-<img alt="_images/7de59e0bdb2e16c95870809409c22ef2f3c49b3a2aa4725f3e97db26a9aa804d.png" src="_images/7de59e0bdb2e16c95870809409c22ef2f3c49b3a2aa4725f3e97db26a9aa804d.png" />
+<img alt="_images/b82b376bc95b188ca255f59719c7e75b5cedd6a4774102691b12719395411a8c.png" src="_images/b82b376bc95b188ca255f59719c7e75b5cedd6a4774102691b12719395411a8c.png" />
 </div>
 </div>
 <p>Approximation (or knowledge) of <span class="math notranslate nohighlight">\(x_0\)</span> allows us to approximate the mean of the step <span class="math notranslate nohighlight">\(t-1\)</span>, using (4).</p>
@@ -715,7 +718,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;$\\mu_{t-1}$  ($\\ell_1$: 0.009)&#39;)
 </pre></div>
 </div>
-<img alt="_images/8657224a1c820dd0016f8cb82ef497fbf71819f75f6d8d075a6f02278d6c0d9b.png" src="_images/8657224a1c820dd0016f8cb82ef497fbf71819f75f6d8d075a6f02278d6c0d9b.png" />
+<img alt="_images/22e25e56315de5164c6217506e027b6b2c6d89b4889efd501d4830bb7373de66.png" src="_images/22e25e56315de5164c6217506e027b6b2c6d89b4889efd501d4830bb7373de66.png" />
 </div>
 </div>
 <p>Once we get our <code class="docutils literal notranslate"><span class="pre">mean_pred</span></code> (<span class="math notranslate nohighlight">\(\tilde{\mu_{t}}\)</span>), we can define our distribution for the previous step</p>
@@ -780,7 +783,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d53fb990aeee1d24381784ea952df2cf8b46ff8213827922452c940a5f4b36ab.png" src="_images/d53fb990aeee1d24381784ea952df2cf8b46ff8213827922452c940a5f4b36ab.png" />
+<img alt="_images/edce0e2d1ad3a2751e415c1ed2570d91568f129db6cbfc5e56104010b4943b9a.png" src="_images/edce0e2d1ad3a2751e415c1ed2570d91568f129db6cbfc5e56104010b4943b9a.png" />
 </div>
 </div>
 </section>
@@ -832,7 +835,7 @@ $<span class="math notranslate nohighlight">\(x_0=\frac{1}{\sqrt{\bar{\alpha}_t}
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</p>
+        <p class="prev-next-title">From Discrete Diffusion to Continous Time Diffusion Processes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
