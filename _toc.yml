@@ -9,4 +9,7 @@ chapters:
 - file: 03-Continous-Diffusion-Process
 - file: 04-Score-Matching
 - file: 05-Score-SwissRoll-Example
-- file: 06-Summary-Score-Based-Models
+- file: 06-Score-MNIST-Example
+- file: 07-Summary-Score-Based-Models
+- file: 08-Example-Implementations
+- file: 09-Another-View

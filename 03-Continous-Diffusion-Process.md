@@ -1,4 +1,4 @@
-# Introduction: From Discrete Diffusion to Continous Time Diffusion Processes
+# From Discrete Diffusion to Continous Time Diffusion Processes
 
 Remebmer the forward step of the diffusion process from the previous notebook: 
 $$
@@ -28,7 +28,11 @@ $$
 
 Here, $x_t$ represents data, $dx_t$ and $dt$ are infinitesimal updates of data and time, $dw_t$ is a noise process that corresponds to Gaussian noise injection, and $\beta(t)$ is now a continuous function of time $t$. 
 
-### What are Stochastic Differential Equations (SDEs)?
+## What are Stochastic Differential Equations (SDEs)?
+
+<figure>
+<img src="imgs/wat_meme.jpg" alt="watmeme" width="500"/>
+</figure>
 
 Stochastic Differential Equations (SDEs) are a type of differential equation in which one or more of the terms is a stochastic process, resulting in a solution that is also a stochastic process. They are used to model systems that are influenced by random effects. The Slide from the CVPR tutorial on Denoising Diffusion based Models (https://cvpr2022-tutorial-diffusion-models.github.io/) below helps to understand the difference between ODEs and SDEs:
 
@@ -69,7 +73,12 @@ The diffusion term is responsible for the random fluctuations in the process $x_
 
 The deterministic part, $a(x_t,t)dt$ is similar to what you would see in an ordinary differential equation (ODE). The stochastic part, $b(x_t,t)dw_t$ is what differentiates an SDE from an ODE. This term introduces randomness into the system. The solution to an SDE is a stochastic process. This means that instead of a single curve as in an ODE, the solution to an SDE is a family of curves, or a random process. Each individual curve represents one possible "path" that the system could take, and the collection of all such curves gives a complete description of the system's behavior. 
 
-### How does this relate to the diffusion process for data generation?
+<figure>
+<img src="imgs/diving_into_sdes.jpg" alt="diving_into_sdes" width="600"/>
+<figcaption></figcaption>
+</figure>
+
+## How does this relate to the diffusion process for data generation?
 
 The deterministic drift part of the diffusion process pulls the data towards the mode of the data distribution. The stochastic diffusion part injects noise into the data. Because of the noise there is no unique path that the data takes. Instead, there is a family of curves that the data could take. The collection of all such curves gives a description of the data distribution. The image below helps to visualize this:
 
@@ -80,8 +89,9 @@ The deterministic drift part of the diffusion process pulls the data towards the
 
 On the left we have samples of the data distribution (images of bedrooms). In the center we have the corresponding diffusion process. In red we can see actual sampled trajectories of the diffusion process. In blue to yellow we can see the a visualization of the probability density function over time. On the left side a simplified multimodal distribution like a Gaussian Mixture Model changing to a univariat Gaussian over time. We can see that there is a deterministic part which pulls the samples to the modes of the distribution and a stochastic part which injects noise making each trajectory unique. We can see that the diffusion process starts with the data distribution and ends with the unit Gaussian distribution.  
 
-### How do we use this for data generation? - Reverse-time diffusion process
+## How do we use this for data generation? - Reverse-time diffusion process
 If we can run this process in the reverse direction we could genereate data from the unit gaussian distribution. As shown in general by Brian Anderson in "Reverse-time diffusion equation models" (https://www.sciencedirect.com/science/article/pii/0304414982900515) and later by Yang Song for generative modeling in "Score-Based Generative Modeling through Stochastic Differential Equations" (https://arxiv.org/abs/2011.13456) we can run the diffusion process in reverse by solving the following SDE for the reverse time diffusion process:
+
 $$
 dx_t = -\frac{1}{2}\beta(t)x_{t}dt - \beta(t)\nabla_{x_{t}}\log q_t(x_t) +\sqrt{\beta(t)}dw_{t} \tag{7}
 $$

@@ -9,6 +9,7 @@ logo: imgs/forward_diffusion.png
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  timeout: 10000
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -22,8 +23,8 @@ bibtex_bibfiles:
 # Information about where the book exists on the web
 repository:
   url: https://github.com/FeMa42/Intro_to_Diffusion  # Online location of your book
-  path_to_book: # Optional path to your book, relative to the repository root
-  branch: gh-pages  # Which branch of the repository should be used when creating links (optional)
+  # path_to_book: / # Optional path to your book, relative to the repository root
+  # branch: gh-pages  # Which branch of the repository should be used when creating links (optional)
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
