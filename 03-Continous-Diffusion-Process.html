@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes &#8212; Introduction to Diffusion Models</title>
+    <title>From Discrete Diffusion to Continous Time Diffusion Processes &#8212; Introduction to Diffusion Models</title>
   
   
   
@@ -163,11 +163,12 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html">Illustration of Diffusion Process</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-Score-MNIST-Example.html">Score-Based Generative Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
 </ul>
 
     </div>
@@ -351,7 +352,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</h1>
+    <h1>From Discrete Diffusion to Continous Time Diffusion Processes</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -375,8 +376,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction-from-discrete-diffusion-to-continous-time-diffusion-processes">
-<h1>Introduction: From Discrete Diffusion to Continous Time Diffusion Processes<a class="headerlink" href="#introduction-from-discrete-diffusion-to-continous-time-diffusion-processes" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="from-discrete-diffusion-to-continous-time-diffusion-processes">
+<h1>From Discrete Diffusion to Continous Time Diffusion Processes<a class="headerlink" href="#from-discrete-diffusion-to-continous-time-diffusion-processes" title="Permalink to this heading">#</a></h1>
 <p>Remebmer the forward step of the diffusion process from the previous notebook:
 $<span class="math notranslate nohighlight">\(
 q(\mathbf{x}_{1:T} \vert \mathbf{x}_0) = \prod^T_{t=1} q(\mathbf{x}_t \vert \mathbf{x}_{t-1}) , \quad
@@ -401,6 +402,9 @@ dx_{t}=-\frac{1}{2}\beta(t)x_{t}dt+\sqrt{\beta(t)}dw_{t} \tag{4}
 <p>Here, <span class="math notranslate nohighlight">\(x_t\)</span> represents data, <span class="math notranslate nohighlight">\(dx_t\)</span> and <span class="math notranslate nohighlight">\(dt\)</span> are infinitesimal updates of data and time, <span class="math notranslate nohighlight">\(dw_t\)</span> is a noise process that corresponds to Gaussian noise injection, and <span class="math notranslate nohighlight">\(\beta(t)\)</span> is now a continuous function of time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <section id="what-are-stochastic-differential-equations-sdes">
 <h2>What are Stochastic Differential Equations (SDEs)?<a class="headerlink" href="#what-are-stochastic-differential-equations-sdes" title="Permalink to this heading">#</a></h2>
+<figure>
+<img src="imgs/wat_meme.jpg" alt="watmeme" width="500"/>
+</figure>
 <p>Stochastic Differential Equations (SDEs) are a type of differential equation in which one or more of the terms is a stochastic process, resulting in a solution that is also a stochastic process. They are used to model systems that are influenced by random effects. The Slide from the CVPR tutorial on Denoising Diffusion based Models (<a class="reference external" href="https://cvpr2022-tutorial-diffusion-models.github.io/">https://cvpr2022-tutorial-diffusion-models.github.io/</a>) below helps to understand the difference between ODEs and SDEs:</p>
 <figure>
 <img src="imgs/SDE_slide.png" alt="ODEsVsSDEs" width="1000"/>
@@ -430,6 +434,10 @@ dx_t = a(x_t, t) dt + b(x_t, t) dw_t \tag{6}
 <p>Where, <span class="math notranslate nohighlight">\(x_t\)</span> is the state of the system at time <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(a(x_t, t)=-\frac{1}{2}\beta(t)x_{t}\)</span> is the deterministic part of the change in the system also referred to as the <strong>drift term</strong>, such as the average velocity of a particle in a fluid due to the fluid flow. The function <span class="math notranslate nohighlight">\(b(x_t, t)=\sqrt{\beta(t)}\)</span> is referred to as the <strong>diffusion coefficient</strong>, and the term <span class="math notranslate nohighlight">\(\sqrt{\beta(t)} dw_{t}\)</span> is the <strong>diffusion term</strong>. Here, <span class="math notranslate nohighlight">\(dw_t\)</span> represents an infinitesimal increment of a Wiener process (or Brownian motion), which is a continuous-time stochastic process with independent, normally distributed increments.</p>
 <p>The diffusion term is responsible for the random fluctuations in the process <span class="math notranslate nohighlight">\(x_t\)</span>. The function <span class="math notranslate nohighlight">\(b(x_t, t)\)</span> determines how these random fluctuations scale with the state of the system and time. For example, if <span class="math notranslate nohighlight">\(b(x_t, t)\)</span> is large, then the process <span class="math notranslate nohighlight">\(x_t\)</span> will have large random fluctuations, and vice versa. The diffusion term represents the random, unpredictable changes in the system, such as the random motion of particles in a fluid due to collisions with other particles. The drift term <span class="math notranslate nohighlight">\(a(x_t,t)dt\)</span> represents the average or expected change in the system, such as the average velocity of a particle in a fluid due to the fluid flow.</p>
 <p>The deterministic part, <span class="math notranslate nohighlight">\(a(x_t,t)dt\)</span> is similar to what you would see in an ordinary differential equation (ODE). The stochastic part, <span class="math notranslate nohighlight">\(b(x_t,t)dw_t\)</span> is what differentiates an SDE from an ODE. This term introduces randomness into the system. The solution to an SDE is a stochastic process. This means that instead of a single curve as in an ODE, the solution to an SDE is a family of curves, or a random process. Each individual curve represents one possible “path” that the system could take, and the collection of all such curves gives a complete description of the system’s behavior.</p>
+<figure>
+<img src="imgs/diving_into_sdes.jpg" alt="diving_into_sdes" width="600"/>
+<figcaption></figcaption>
+</figure>
 </section>
 <section id="how-does-this-relate-to-the-diffusion-process-for-data-generation">
 <h2>How does this relate to the diffusion process for data generation?<a class="headerlink" href="#how-does-this-relate-to-the-diffusion-process-for-data-generation" title="Permalink to this heading">#</a></h2>
@@ -442,10 +450,11 @@ dx_t = a(x_t, t) dt + b(x_t, t) dw_t \tag{6}
 </section>
 <section id="how-do-we-use-this-for-data-generation-reverse-time-diffusion-process">
 <h2>How do we use this for data generation? - Reverse-time diffusion process<a class="headerlink" href="#how-do-we-use-this-for-data-generation-reverse-time-diffusion-process" title="Permalink to this heading">#</a></h2>
-<p>If we can run this process in the reverse direction we could genereate data from the unit gaussian distribution. As shown in general by Brian Anderson in “Reverse-time diffusion equation models” (<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/0304414982900515">https://www.sciencedirect.com/science/article/pii/0304414982900515</a>) and later by Yang Song for generative modeling in “Score-Based Generative Modeling through Stochastic Differential Equations” (<a class="reference external" href="https://arxiv.org/abs/2011.13456">https://arxiv.org/abs/2011.13456</a>) we can run the diffusion process in reverse by solving the following SDE for the reverse time diffusion process:
-$<span class="math notranslate nohighlight">\(
+<p>If we can run this process in the reverse direction we could genereate data from the unit gaussian distribution. As shown in general by Brian Anderson in “Reverse-time diffusion equation models” (<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/0304414982900515">https://www.sciencedirect.com/science/article/pii/0304414982900515</a>) and later by Yang Song for generative modeling in “Score-Based Generative Modeling through Stochastic Differential Equations” (<a class="reference external" href="https://arxiv.org/abs/2011.13456">https://arxiv.org/abs/2011.13456</a>) we can run the diffusion process in reverse by solving the following SDE for the reverse time diffusion process:</p>
+<div class="math notranslate nohighlight">
+\[
 dx_t = -\frac{1}{2}\beta(t)x_{t}dt - \beta(t)\nabla_{x_{t}}\log q_t(x_t) +\sqrt{\beta(t)}dw_{t} \tag{7}
-\)</span>$</p>
+\]</div>
 <p>Where, <span class="math notranslate nohighlight">\(q_t(x_t)\)</span> is the probability density function of the data distribution at time <span class="math notranslate nohighlight">\(t\)</span>. The term <span class="math notranslate nohighlight">\(-\beta(t)\nabla_{x_{t}}\log q_t(x_t)\)</span> is the <strong>score function</strong> which is the gradient of the log probability of the data distribution. The score function forms the drift term together with the term <span class="math notranslate nohighlight">\(-\frac{1}{2}\beta(t)x_{t}dt\)</span>, which is the same as in the forward direction. The diffusion term is also the same as in the forward diffusion SDE from above. We can use SDE solvers to generate data samples based on equation (7) (more on this later). However, there is the question <strong>how do we get the score function <span class="math notranslate nohighlight">\(\nabla_{x_{t}}\log q_t(x_t)\)</span>?</strong></p>
 </section>
 </section>

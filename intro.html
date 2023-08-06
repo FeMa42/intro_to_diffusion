@@ -160,11 +160,13 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html">Illustration of Diffusion Process</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-Score-MNIST-Example.html">Example: Score-Based Generative Model on MNIST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-Example-Implementations.html">Implementation Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-Another-View.html">Another view on Score-Based Models</a></li>
 </ul>
 
     </div>
@@ -362,13 +364,14 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-diffusion-and-score-based-generative-models">
 <h1>Introduction to Diffusion and Score-Based Generative Models<a class="headerlink" href="#introduction-to-diffusion-and-score-based-generative-models" title="Permalink to this heading">#</a></h1>
-<p>This is a small book which gives an introduction to diffusion and score-based generative models. It is based on the following resources:</p>
+<p>This is a small introduction to denoising diffusion and score-based generative models. It is based on a collection of the following resources:</p>
 <p><strong>Resources:</strong></p>
 <ul class="simple">
-<li><p>A list of great resource can be found here: <a class="github reference external" href="https://github.com/diff-usion/Awesome-Diffusion-Models">diff-usion/Awesome-Diffusion-Models</a></p></li>
 <li><p><strong>Diffusion-Denoising Models</strong> For a very good introduction into diffusion models you can check out the blog post from Lilian Weng: <a class="reference external" href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/">https://lilianweng.github.io/posts/2021-07-11-diffusion-models/</a></p></li>
 <li><p><strong>Score-Based Generative Models</strong> A good introduction is given by Yang Song here: <a class="reference external" href="https://yang-song.net/blog/2021/score/">https://yang-song.net/blog/2021/score/</a>, <a class="reference external" href="https://www.youtube.com/watch?v=wMmqCMwuM2Q">https://www.youtube.com/watch?v=wMmqCMwuM2Q</a></p></li>
 <li><p>CVPR 2022 Tutorial on <strong>Denoising Diffusion-based Generative Modeling - Foundations and Applications</strong>: <a class="reference external" href="https://cvpr2022-tutorial-diffusion-models.github.io/">https://cvpr2022-tutorial-diffusion-models.github.io/</a></p></li>
+<li><p><strong>DiffusionFastForward</strong> Repository <a class="github reference external" href="https://github.com/mikonvergence/DiffusionFastForward">mikonvergence/DiffusionFastForward</a></p></li>
+<li><p><strong>ScoreDiffusionModel</strong> Repository <a class="github reference external" href="https://github.com/JeongJiHeon/ScoreDiffusionModel">JeongJiHeon/ScoreDiffusionModel</a></p></li>
 </ul>
 <div class="toctree-wrapper compound">
 <ul>
@@ -376,11 +379,13 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="01-Generative-models.html#score-matching-and-diffusion-models">Score Matching and Diffusion Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html">Illustration of Diffusion Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html#data-preprocessing">Data Preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html#implmeneting-score-based-generative-model">Implmeneting Score-Based Generative Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-Score-MNIST-Example.html">Example: Score-Based Generative Model on MNIST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-Example-Implementations.html">Implementation Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-Another-View.html">Another view on Score-Based Models</a></li>
 </ul>
 </div>
 </section>

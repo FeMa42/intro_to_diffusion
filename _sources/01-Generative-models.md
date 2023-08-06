@@ -1,6 +1,13 @@
 # Generative Models
 
-Generative models, for real-world applications, must meet the following criteria:
+## What are Generative Models?
+
+<figure>
+<img src="imgs/generative-overview.png" alt="GenerativeModelOverview" width="800"/>
+<figcaption> Generative learning Overview (from: https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)</figcaption>
+</figure>
+
+Generative models are a class of machine learning models that learn the probability distribution some given data, like images. This means that they learn to model the distribution of the data, which can then be used to generate new samples from the same distribution for example. Generative models, for real-world applications, must meet the following criteria:
 
    1. **High-quality sampling:** Models should generate high quality results, like clear speech or realistic images, crucial for user interaction.
    2. **Mode coverage and sample diversity:** Models must capture data's complexity and diversity without compromising quality.
@@ -26,13 +33,27 @@ These Methods have several advantages over existing model families:
 - exact **log-likelihood** computation (This is actual pretty awesome. There is a close conncetions to normalizing flows if we use Score based models)
 - **inverse problem solving** without re-training models
 
-
 <figure>
-<img src="imgs/generative-overview.png" alt="GenerativeModelOverview" width="800"/>
-<figcaption> Generative learning Overview (from: https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)</figcaption>
+<img src="imgs/two_buttons.jpg" alt="two_buttons" width="500"/>
 </figure>
 
-**Resources:**
+**So this is Awesome right?** 
+
+**Well...**
+
+<figure>
+<img src="imgs/waiting.jpg" alt="two_buttons" width="500"/>
+<figcaption>1. Score based and denoising diffusion generative models need several calls to deep neural networks for sample generation. This makes them slower than alternatives like generative adversarial networks (GANs), which only require a single network call.</figcaption>
+</figure>
+
+
+<figure>
+<img src="imgs/got_gpu.jpg" alt="got_gpu" width="500"/>
+<figcaption>2. Similar to most generative models for high resolution data (e.g. GANs), score based and denoising diffusion generative models require a lot of GPU memory. This makes them computationally expensive to train and sample from.</figcaption>
+</figure>
+
+
+**Recommended Further Resources:**
 
 - A list of great resource can be found here: https://github.com/diff-usion/Awesome-Diffusion-Models
 
@@ -41,3 +62,6 @@ These Methods have several advantages over existing model families:
 - **Score-Based Generative Models** A good introduction is given by Yang Song here: https://yang-song.net/blog/2021/score/, https://www.youtube.com/watch?v=wMmqCMwuM2Q 
 
 - CVPR 2022 Tutorial on **Denoising Diffusion-based Generative Modeling - Foundations and Applications**: https://cvpr2022-tutorial-diffusion-models.github.io/ 
+
+- Great repository for a starting point to understanding and researching diffusion-based generative models: https://github.com/mikonvergence/DiffusionFastForward
+

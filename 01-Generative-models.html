@@ -161,11 +161,12 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02-Diffusion-Process.html">Illustration of Diffusion Process</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">Introduction: From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-Continous-Diffusion-Process.html">From Discrete Diffusion to Continous Time Diffusion Processes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-Score-Matching.html">Score Matching</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-Score-SwissRoll-Example.html">Example: Score-Based Generative Model for 2D Swiss Roll Dataset</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="06-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-Score-MNIST-Example.html">Score-Based Generative Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-Summary-Score-Based-Models.html">Summary: Score-Based Models</a></li>
 </ul>
 
     </div>
@@ -359,7 +360,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Generative Models</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Generative Models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-generative-models">What are Generative Models?</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#score-matching-and-diffusion-models">Score Matching and Diffusion Models</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-score-based-diffusion-denoising-models">Advantages of Score-Based (Diffusion-Denoising) Models</a></li>
 </ul>
@@ -378,7 +382,13 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="generative-models">
 <h1>Generative Models<a class="headerlink" href="#generative-models" title="Permalink to this heading">#</a></h1>
-<p>Generative models, for real-world applications, must meet the following criteria:</p>
+<section id="what-are-generative-models">
+<h2>What are Generative Models?<a class="headerlink" href="#what-are-generative-models" title="Permalink to this heading">#</a></h2>
+<figure>
+<img src="imgs/generative-overview.png" alt="GenerativeModelOverview" width="800"/>
+<figcaption> Generative learning Overview (from: https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)</figcaption>
+</figure>
+<p>Generative models are a class of machine learning models that learn the probability distribution some given data, like images. This means that they learn to model the distribution of the data, which can then be used to generate new samples from the same distribution for example. Generative models, for real-world applications, must meet the following criteria:</p>
 <ol class="arabic simple">
 <li><p><strong>High-quality sampling:</strong> Models should generate high quality results, like clear speech or realistic images, crucial for user interaction.</p></li>
 <li><p><strong>Mode coverage and sample diversity:</strong> Models must capture data’s complexity and diversity without compromising quality.</p></li>
@@ -390,6 +400,7 @@ document.write(`
 <img src="imgs/genM-trilemma.png" alt="GenModelsTrilema" width="600"/>
 <figcaption> Generative learning trilemma (from: https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-1/)</figcaption>
 </figure>
+</section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="score-matching-and-diffusion-models">
 <h1>Score Matching and Diffusion Models<a class="headerlink" href="#score-matching-and-diffusion-models" title="Permalink to this heading">#</a></h1>
@@ -404,15 +415,25 @@ document.write(`
 <li><p><strong>inverse problem solving</strong> without re-training models</p></li>
 </ul>
 <figure>
-<img src="imgs/generative-overview.png" alt="GenerativeModelOverview" width="800"/>
-<figcaption> Generative learning Overview (from: https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)</figcaption>
+<img src="imgs/two_buttons.jpg" alt="two_buttons" width="500"/>
 </figure>
-<p><strong>Resources:</strong></p>
+<p><strong>So this is Awesome right?</strong></p>
+<p><strong>Well…</strong></p>
+<figure>
+<img src="imgs/waiting.jpg" alt="two_buttons" width="500"/>
+<figcaption>1. Score based and denoising diffusion generative models need several calls to deep neural networks for sample generation. This makes them slower than alternatives like generative adversarial networks (GANs), which only require a single network call.</figcaption>
+</figure>
+<figure>
+<img src="imgs/got_gpu.jpg" alt="got_gpu" width="500"/>
+<figcaption>2. Similar to most generative models for high resolution data (e.g. GANs), score based and denoising diffusion generative models require a lot of GPU memory. This makes them computationally expensive to train and sample from.</figcaption>
+</figure>
+<p><strong>Recommended Further Resources:</strong></p>
 <ul class="simple">
 <li><p>A list of great resource can be found here: <a class="github reference external" href="https://github.com/diff-usion/Awesome-Diffusion-Models">diff-usion/Awesome-Diffusion-Models</a></p></li>
 <li><p><strong>Diffusion-Denoising Models</strong> For a very good introduction into diffusion models you can check out the blog post from Lilian Weng: <a class="reference external" href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/">https://lilianweng.github.io/posts/2021-07-11-diffusion-models/</a></p></li>
 <li><p><strong>Score-Based Generative Models</strong> A good introduction is given by Yang Song here: <a class="reference external" href="https://yang-song.net/blog/2021/score/">https://yang-song.net/blog/2021/score/</a>, <a class="reference external" href="https://www.youtube.com/watch?v=wMmqCMwuM2Q">https://www.youtube.com/watch?v=wMmqCMwuM2Q</a></p></li>
 <li><p>CVPR 2022 Tutorial on <strong>Denoising Diffusion-based Generative Modeling - Foundations and Applications</strong>: <a class="reference external" href="https://cvpr2022-tutorial-diffusion-models.github.io/">https://cvpr2022-tutorial-diffusion-models.github.io/</a></p></li>
+<li><p>Great repository for a starting point to understanding and researching diffusion-based generative models: <a class="github reference external" href="https://github.com/mikonvergence/DiffusionFastForward">mikonvergence/DiffusionFastForward</a></p></li>
 </ul>
 </section>
 </section>
@@ -484,7 +505,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Generative Models</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Generative Models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-generative-models">What are Generative Models?</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#score-matching-and-diffusion-models">Score Matching and Diffusion Models</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-score-based-diffusion-denoising-models">Advantages of Score-Based (Diffusion-Denoising) Models</a></li>
 </ul>
