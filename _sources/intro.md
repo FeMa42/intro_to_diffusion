@@ -1,5 +1,10 @@
 # Introduction to Diffusion and Score-Based Generative Models
 
+<figure>
+<img src="imgs/score_ode_swiss.gif" alt="Score ODE" width="500"/>
+<figcaption>Visualization of ODE iterations using a score based model trained on a swiss roll dataset.</figcaption>
+</figure>
+
 This is a small introduction to denoising diffusion and score-based generative models. It is based on a collection of the following resources:
 
 **Resources:**

@@ -2,11 +2,11 @@
 
 ## LSGM: Score-based Generative Modeling in Latent Space
 
-[LSGM: Score-based Generative Modeling in Latent Space](https://github.com/NVlabs/LSGM) trains a score-based generative model (a.k.a. a denoising diffusion model) in the latent space of a variational autoencoder. It currently achieves state-of-the-art generative performance on several image datasets.
+[LSGM: Score-based Generative Modeling in Latent Space](https://github.com/NVlabs/LSGM) trains a score-based generative model (a.k.a. a denoising diffusion model) in the latent space of a variational autoencoder. In the latent score-based generative model (LSGM), data is mapped to latent space via an encoder $q(z_0|x)$ and a diffusion process is applied in the latent space $(z_0 → z_1)$. Synthesis starts from the base distribution $p(z_1)$ and generates samples in latent space via denoising $(z_0 ← z_1)$. Then, the samples are mapped from latent to data space using a decoder $p(x|z_0)$. The model is trained end-to-end. It currently achieves state-of-the-art generative performance on several image datasets.
 
 <figure>
 <img src="https://github.com/NVlabs/LSGM/raw/main/img/LSGM.png" alt="LSGM" width="600"/>
-<figcaption>In the latent score-based generative model (LSGM), data is mapped to latent space via an encoder $q(z_0|x)$ and a diffusion process is applied in the latent space $(z_0 → z_1)$. Synthesis starts from the base distribution $p(z_1)$ and generates samples in latent space via denoising $(z_0 ← z_1)$. Then, the samples are mapped from latent to data space using a decoder $p(x|z_0)$. The model is trained end-to-end. </figcaption>
+<figcaption> LSGM trains a score-based generative model in the latent space of a variational autoencoder.</figcaption>
 </figure>
 
 
